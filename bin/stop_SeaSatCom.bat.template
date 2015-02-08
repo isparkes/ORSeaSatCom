@@ -1,0 +1,6 @@
+@echo off
+set OR_ROOT_DIR=$INSTALL_PATH\OpenRate
+cd %OR_ROOT_DIR%
+set LIB_DIR=%OR_ROOT_DIR%/lib
+set ORCLJAR=%LIB_DIR%\ORCLClient.jar
+"$JDKPath\bin\java" -cp "%ORCLJAR%" simpleclient.OpenRateClient localhost 8086 Framework:Shutdown=true

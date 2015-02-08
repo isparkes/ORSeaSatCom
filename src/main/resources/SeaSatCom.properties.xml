@@ -1,0 +1,593 @@
+<?xml version="1.0"?>
+<config>
+  <Application>
+    SeaSatComRating
+  </Application>
+
+  <PipelineList>
+    <GSMPipe>
+      <Active>True</Active>
+    </GSMPipe>
+
+    <SATPipe>
+      <Active>True</Active>
+    </SATPipe>
+
+    <BalLoader>
+      <Active>False</Active>
+    </BalLoader>
+  </PipelineList>
+
+  <GSMPipe>
+    <InputAdapter>
+      <GSMInpAdapter>
+        <ClassName>SeaSatCom.GSMInputAdapter</ClassName>
+        <BatchSize>5000</BatchSize>
+        <InputFilePath>Data/SeaSatCom</InputFilePath>
+        <InputFilePrefix>LST_</InputFilePrefix>
+        <InputFileSuffix>.csv</InputFileSuffix>
+        <DoneFilePath>Data/SeaSatCom</DoneFilePath>
+        <DoneFilePrefix>LST_</DoneFilePrefix>
+        <DoneFileSuffix>.done</DoneFileSuffix>
+        <ErrFilePath>Data/SeaSatCom</ErrFilePath>
+        <ErrFilePrefix>LST_</ErrFilePrefix>
+        <ErrFileSuffix>.err</ErrFileSuffix>
+      </GSMInpAdapter>
+    </InputAdapter>
+
+    <Process>
+      <NormLookupGSM>
+        <ClassName>SeaSatCom.Normalisation</ClassName>
+        <DataCache>NormCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </NormLookupGSM>
+      
+      <OriginLookupGSM>
+        <ClassName>SeaSatCom.OriginLookup</ClassName>
+        <DataCache>OriginLookupCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </OriginLookupGSM>
+      
+      <GSMDestinationLookup>
+        <ClassName>SeaSatCom.GSMDestinationLookup</ClassName>
+        <DataCache>GSMDestLookupCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </GSMDestinationLookup>
+
+      <CustomerTariffLookupGSM>
+        <ClassName>SeaSatCom.JBCustomerTariffLookup</ClassName>
+        <DataCache>JBCustomerCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </CustomerTariffLookupGSM>
+
+      <DiscountLookupGSM>
+        <ClassName>SeaSatCom.DiscountLookup</ClassName>
+        <DataCache>DiscountLookupCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </DiscountLookupGSM>
+
+      <PromoPreRating>
+        <ClassName>SeaSatCom.FriendsFamily</ClassName>
+        <DataCache>FFCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </PromoPreRating>
+
+      <PromoPreRatingGSM>
+        <ClassName>SeaSatCom.PromoCalcPreRating</ClassName>
+        <DataCache>BalCache</DataCache>
+        <BatchSize>5000</BatchSize>
+        <BalanceConfig>ConfigData/SeaSatCom/BalanceConfig.dat</BalanceConfig>
+      </PromoPreRatingGSM>
+
+      <GSMPriceLookup>
+        <ClassName>SeaSatCom.GSMPriceModelLookup</ClassName>
+        <DataCache>GSMPriceLookupCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </GSMPriceLookup>
+
+      <RateOverride>
+        <ClassName>SeaSatCom.RateOverride</ClassName>
+        <DataCache>RateOverrideLookupCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </RateOverride>
+
+      <RateLookupGSM>
+        <ClassName>SeaSatCom.RateLookup</ClassName>
+        <DataCache>RateCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </RateLookupGSM>
+      
+      <RollupGSM>
+        <ClassName>SeaSatCom.Rollup</ClassName>
+        <BatchSize>5000</BatchSize>
+      </RollupGSM>
+
+      <SuspensePreparation>
+        <ClassName>SeaSatCom.OutputPreparation</ClassName>
+        <DataCache>SuspensePreparationCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </SuspensePreparation>
+
+      <DumpGSM>
+        <ClassName>OpenRate.process.Dump</ClassName>
+        <Active>true</Active>
+        <DumpType>All</DumpType>
+        <DumpFilePath>Data/SeaSatCom</DumpFilePath>
+        <DumpFilePrefix>LST_</DumpFilePrefix>
+        <DumpFileSuffix>.dump</DumpFileSuffix>
+        <BatchSize>5000</BatchSize>
+      </DumpGSM>
+    </Process>
+
+    <OutputAdapter>
+      <SuspenseOutput>
+        <ClassName>SeaSatCom.SuspenseOutput</ClassName>
+        <OutputName>ConfigSuspenseOutput</OutputName>
+        <BatchSize>5000</BatchSize>
+        <MaxSleep>50</MaxSleep>
+        <OutputFilePath>Data/SeaSatCom</OutputFilePath>
+        <OutputFilePrefix>LST_</OutputFilePrefix>
+        <OutputFileSuffix>.recycle</OutputFileSuffix>
+        <ErrFilePath>Data/SeaSatCom</ErrFilePath>
+        <ErrFilePrefix>LST_</ErrFilePrefix>
+        <ErrFileSuffix>.serr</ErrFileSuffix>
+        <DeleteEmptyOutputFile>True</DeleteEmptyOutputFile>
+        <DeleteEmptyErrorFile>True</DeleteEmptyErrorFile>
+      </SuspenseOutput>
+
+      <jbillingOutput>
+        <ClassName>SeaSatCom.JBillingOutput</ClassName>
+        <OutputName>jbillingOutput</OutputName>
+        <BatchSize>5000</BatchSize>
+        <MaxSleep>50</MaxSleep>
+        <OutputFilePath>Data/SeaSatCom</OutputFilePath>
+        <OutputFilePrefix>LST_</OutputFilePrefix>
+        <OutputFileSuffix>.Gout</OutputFileSuffix>
+        <ErrFilePath>Data/SeaSatCom</ErrFilePath>
+        <ErrFilePrefix>LST_</ErrFilePrefix>
+        <ErrFileSuffix>.joerr</ErrFileSuffix>
+        <DeleteEmptyOutputFile>True</DeleteEmptyOutputFile>
+        <DeleteEmptyErrorFile>True</DeleteEmptyErrorFile>
+      </jbillingOutput>
+
+      <OtherSuspenseOutput>
+        <ClassName>SeaSatCom.SuspenseOutput</ClassName>
+        <OutputName>OtherSuspenseOutput</OutputName>
+        <BatchSize>5000</BatchSize>
+        <MaxSleep>50</MaxSleep>
+        <OutputFilePath>Data/SeaSatCom</OutputFilePath>
+        <OutputFilePrefix>LST_</OutputFilePrefix>
+        <OutputFileSuffix>.osusp</OutputFileSuffix>
+        <ErrFilePath>Data/SeaSatCom</ErrFilePath>
+        <ErrFilePrefix>LST_</ErrFilePrefix>
+        <ErrFileSuffix>.oerr</ErrFileSuffix>
+        <DeleteEmptyOutputFile>True</DeleteEmptyOutputFile>
+        <DeleteEmptyErrorFile>True</DeleteEmptyErrorFile>
+      </OtherSuspenseOutput>
+
+      <RejectOutput>
+        <ClassName>SeaSatCom.SuspenseOutput</ClassName>
+        <OutputName>RejectOutput</OutputName>
+        <BatchSize>5000</BatchSize>
+        <MaxSleep>50</MaxSleep>
+        <OutputFilePath>Data/SeaSatCom</OutputFilePath>
+        <OutputFilePrefix>LST_</OutputFilePrefix>
+        <OutputFileSuffix>.rej</OutputFileSuffix>
+        <ErrFilePath>Data/SeaSatCom</ErrFilePath>
+        <ErrFilePrefix>LST_</ErrFilePrefix>
+        <ErrFileSuffix>.rerr</ErrFileSuffix>
+        <DeleteEmptyOutputFile>True</DeleteEmptyOutputFile>
+        <DeleteEmptyErrorFile>True</DeleteEmptyErrorFile>
+      </RejectOutput>
+
+      <JBSuspenseOutput>
+        <ClassName>SeaSatCom.SuspenseOutput</ClassName>
+        <OutputName>JBSuspenseOutput</OutputName>
+        <BatchSize>5000</BatchSize>
+        <MaxSleep>50</MaxSleep>
+        <OutputFilePath>Data/SeaSatCom</OutputFilePath>
+        <OutputFilePrefix>LST_</OutputFilePrefix>
+        <OutputFileSuffix>.jbsusp</OutputFileSuffix>
+        <ErrFilePath>Data/SeaSatCom</ErrFilePath>
+        <ErrFilePrefix>LST_</ErrFilePrefix>
+        <ErrFileSuffix>.jerr</ErrFileSuffix>
+        <DeleteEmptyOutputFile>True</DeleteEmptyOutputFile>
+        <DeleteEmptyErrorFile>True</DeleteEmptyErrorFile>
+      </JBSuspenseOutput>
+
+      <BOOutAdapter>
+        <ClassName>SeaSatCom.BalanceOutputAdapter</ClassName>
+        <OutputName>BalanceOutput</OutputName>
+        <BatchSize>5000</BatchSize>
+        <MaxSleep>50</MaxSleep>
+        <OutputFilePath>Data/SeaSatCom/Balance</OutputFilePath>
+        <OutputFilePrefix>BAL_</OutputFilePrefix>
+        <OutputFileSuffix>.out</OutputFileSuffix>
+        <ErrFilePath>Data/SeaSatCom</ErrFilePath>
+        <ErrFilePrefix>BAL_</ErrFilePrefix>
+        <ErrFileSuffix>.err</ErrFileSuffix>
+        <DeleteEmptyOutputFile>True</DeleteEmptyOutputFile>
+        <DeleteEmptyErrorFile>True</DeleteEmptyErrorFile>
+      </BOOutAdapter>
+    </OutputAdapter>
+  </GSMPipe>
+
+  <SATPipe>
+    <InputAdapter>
+      <SATInpAdapter>
+        <ClassName>SeaSatCom.SATInputAdapter</ClassName>
+        <BatchSize>5000</BatchSize>
+        <InputFilePath>Data/SeaSatCom</InputFilePath>
+        <InputFilePrefix>SAT_</InputFilePrefix>
+        <InputFileSuffix>.csv</InputFileSuffix>
+        <DoneFilePath>Data/SeaSatCom</DoneFilePath>
+        <DoneFilePrefix>SAT_</DoneFilePrefix>
+        <DoneFileSuffix>.done</DoneFileSuffix>
+        <ErrFilePath>Data/SeaSatCom</ErrFilePath>
+        <ErrFilePrefix>SAT_</ErrFilePrefix>
+        <ErrFileSuffix>.err</ErrFileSuffix>
+      </SATInpAdapter>
+    </InputAdapter>
+
+    <Process>
+      <NormLookup>
+        <ClassName>SeaSatCom.Normalisation</ClassName>
+        <DataCache>NormCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </NormLookup>
+      
+      <SATDestinationLookup>
+        <ClassName>SeaSatCom.SATDestinationLookup</ClassName>
+        <DataCache>SATDestLookupCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </SATDestinationLookup>
+
+      <CustomerTariffLookupSAT>
+        <ClassName>SeaSatCom.JBCustomerTariffLookup</ClassName>
+        <DataCache>JBCustomerCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </CustomerTariffLookupSAT>
+
+      <TimeLookup>
+        <ClassName>SeaSatCom.TimeLookup</ClassName>
+        <DataCache>TimeCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </TimeLookup>
+
+      <DiscountLookupSAT>
+        <ClassName>SeaSatCom.DiscountLookup</ClassName>
+        <DataCache>DiscountLookupCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </DiscountLookupSAT>
+
+      <PromoPreRatingGSM>
+        <ClassName>SeaSatCom.PromoCalcPreRating</ClassName>
+        <DataCache>BalCache</DataCache>
+        <BatchSize>5000</BatchSize>
+        <BalanceConfig>ConfigData/SeaSatCom/BalanceConfig.dat</BalanceConfig>
+      </PromoPreRatingGSM>
+
+      <SATPriceLookup>
+        <ClassName>SeaSatCom.SATPriceModelLookup</ClassName>
+        <DataCache>SATPriceLookupCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </SATPriceLookup>
+      
+      <RateLookup>
+        <ClassName>SeaSatCom.RateLookup</ClassName>
+        <DataCache>RateCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </RateLookup>
+      
+      <RollupSAT>
+        <ClassName>SeaSatCom.Rollup</ClassName>
+        <BatchSize>5000</BatchSize>
+      </RollupSAT>
+
+      <SuspensePreparation>
+        <ClassName>SeaSatCom.OutputPreparation</ClassName>
+        <DataCache>SuspensePreparationCache</DataCache>
+        <BatchSize>5000</BatchSize>
+      </SuspensePreparation>
+
+      <DumpSAT>
+        <ClassName>OpenRate.process.Dump</ClassName>
+        <Active>true</Active>
+        <DumpType>All</DumpType>
+        <DumpFilePath>Data/SeaSatCom</DumpFilePath>
+        <DumpFilePrefix>SAT_</DumpFilePrefix>
+        <DumpFileSuffix>.dump</DumpFileSuffix>
+        <BatchSize>5000</BatchSize>
+      </DumpSAT>
+    </Process>
+
+    <OutputAdapter>
+      <SuspenseOutput>
+        <ClassName>SeaSatCom.SuspenseOutput</ClassName>
+        <OutputName>ConfigSuspenseOutput</OutputName>
+        <BatchSize>5000</BatchSize>
+        <MaxSleep>50</MaxSleep>
+        <OutputFilePath>Data/SeaSatCom</OutputFilePath>
+        <OutputFilePrefix>SAT_</OutputFilePrefix>
+        <OutputFileSuffix>.recycle</OutputFileSuffix>
+        <ErrFilePath>Data/SeaSatCom</ErrFilePath>
+        <ErrFilePrefix>SAT_</ErrFilePrefix>
+        <ErrFileSuffix>.serr</ErrFileSuffix>
+        <DeleteEmptyOutputFile>True</DeleteEmptyOutputFile>
+        <DeleteEmptyErrorFile>True</DeleteEmptyErrorFile>
+      </SuspenseOutput>
+
+      <jbillingOutput>
+        <ClassName>SeaSatCom.JBillingOutput</ClassName>
+        <OutputName>jbillingOutput</OutputName>
+        <BatchSize>5000</BatchSize>
+        <MaxSleep>50</MaxSleep>
+        <OutputFilePath>Data/SeaSatCom</OutputFilePath>
+        <OutputFilePrefix>SAT_</OutputFilePrefix>
+        <OutputFileSuffix>.Sout</OutputFileSuffix>
+        <ErrFilePath>Data/SeaSatCom</ErrFilePath>
+        <ErrFilePrefix>SAT_</ErrFilePrefix>
+        <ErrFileSuffix>.joerr</ErrFileSuffix>
+        <DeleteEmptyOutputFile>True</DeleteEmptyOutputFile>
+        <DeleteEmptyErrorFile>True</DeleteEmptyErrorFile>
+      </jbillingOutput>
+
+      <OtherSuspenseOutput>
+        <ClassName>SeaSatCom.SuspenseOutput</ClassName>
+        <OutputName>OtherSuspenseOutput</OutputName>
+        <BatchSize>5000</BatchSize>
+        <MaxSleep>50</MaxSleep>
+        <OutputFilePath>Data/SeaSatCom</OutputFilePath>
+        <OutputFilePrefix>SAT_</OutputFilePrefix>
+        <OutputFileSuffix>.osusp</OutputFileSuffix>
+        <ErrFilePath>Data/SeaSatCom</ErrFilePath>
+        <ErrFilePrefix>SAT_</ErrFilePrefix>
+        <ErrFileSuffix>.oerr</ErrFileSuffix>
+        <DeleteEmptyOutputFile>True</DeleteEmptyOutputFile>
+        <DeleteEmptyErrorFile>True</DeleteEmptyErrorFile>
+      </OtherSuspenseOutput>
+
+      <RejectOutput>
+        <ClassName>SeaSatCom.SuspenseOutput</ClassName>
+        <OutputName>RejectOutput</OutputName>
+        <BatchSize>5000</BatchSize>
+        <MaxSleep>50</MaxSleep>
+        <OutputFilePath>Data/SeaSatCom</OutputFilePath>
+        <OutputFilePrefix>SAT_</OutputFilePrefix>
+        <OutputFileSuffix>.rej</OutputFileSuffix>
+        <ErrFilePath>Data/SeaSatCom</ErrFilePath>
+        <ErrFilePrefix>SAT_</ErrFilePrefix>
+        <ErrFileSuffix>.rerr</ErrFileSuffix>
+        <DeleteEmptyOutputFile>True</DeleteEmptyOutputFile>
+        <DeleteEmptyErrorFile>True</DeleteEmptyErrorFile>
+      </RejectOutput>
+
+      <JBSuspenseOutput>
+        <ClassName>SeaSatCom.SuspenseOutput</ClassName>
+        <OutputName>JBSuspenseOutput</OutputName>
+        <BatchSize>5000</BatchSize>
+        <MaxSleep>50</MaxSleep>
+        <OutputFilePath>Data/SeaSatCom</OutputFilePath>
+        <OutputFilePrefix>SAT_</OutputFilePrefix>
+        <OutputFileSuffix>.jbsusp</OutputFileSuffix>
+        <ErrFilePath>Data/SeaSatCom</ErrFilePath>
+        <ErrFilePrefix>SAT_</ErrFilePrefix>
+        <ErrFileSuffix>.jerr</ErrFileSuffix>
+        <DeleteEmptyOutputFile>True</DeleteEmptyOutputFile>
+        <DeleteEmptyErrorFile>True</DeleteEmptyErrorFile>
+      </JBSuspenseOutput>
+
+      <BOOutAdapter>
+        <ClassName>SeaSatCom.BalanceOutputAdapter</ClassName>
+        <OutputName>BalanceOutput</OutputName>
+        <BatchSize>5000</BatchSize>
+        <MaxSleep>50</MaxSleep>
+        <OutputFilePath>Data/SeaSatCom/Balance</OutputFilePath>
+        <OutputFilePrefix>BAL_</OutputFilePrefix>
+        <OutputFileSuffix>.out</OutputFileSuffix>
+        <ErrFilePath>Data/SeaSatCom</ErrFilePath>
+        <ErrFilePrefix>BAL_</ErrFilePrefix>
+        <ErrFileSuffix>.err</ErrFileSuffix>
+        <DeleteEmptyOutputFile>True</DeleteEmptyOutputFile>
+        <DeleteEmptyErrorFile>True</DeleteEmptyErrorFile>
+      </BOOutAdapter>
+    </OutputAdapter>
+  </SATPipe>
+  
+  <BalLoader>
+    <InputAdapter>
+      <BLInpAdapter>
+        <ClassName>SeaSatCom.BalInputAdapter</ClassName>
+        <BatchSize>5000</BatchSize>
+        <InputFilePath>Data/SeaSatCom/Balance</InputFilePath>
+        <InputFilePrefix>BAL_</InputFilePrefix>
+        <InputFileSuffix>.out</InputFileSuffix>
+        <DoneFilePath>Data/SeaSatCom/Balance/Done</DoneFilePath>
+        <DoneFilePrefix>BAL_</DoneFilePrefix>
+        <DoneFileSuffix>.done</DoneFileSuffix>
+        <ErrFilePath>Data/SeaSatCom/Balance/Err</ErrFilePath>
+        <ErrFilePrefix>BAL_</ErrFilePrefix>
+        <ErrFileSuffix>.err-in</ErrFileSuffix>
+      </BLInpAdapter>
+    </InputAdapter>
+
+    <Process>
+    </Process>
+
+    <OutputAdapter>
+      <DBOutputAdapter>
+        <ClassName>SeaSatCom.BalDBOutput</ClassName>
+        <OutputName>default</OutputName>
+        <BatchSize>5000</BatchSize>
+        <MaxSleep>50</MaxSleep>
+        <DataSource>JBDB</DataSource>
+        <ValidateStatement>select count(*) from ALIAS</ValidateStatement>
+        <InitStatement>select count(*) from ALIAS</InitStatement>
+        <RecordInsertStatement>CALL sp_UpdateCounter(?,?,?,?,?,?)</RecordInsertStatement>
+        <CommitStatement>update COUNTER_BALS set RECORD_ID=0 where RECORD_ID=1</CommitStatement>
+        <RollbackStatement>delete from COUNTER_BALS where RECORD_ID=1</RollbackStatement>
+      </DBOutputAdapter>
+    </OutputAdapter>
+  </BalLoader>
+
+  <Resource>
+    <LogFactory>
+      <ClassName>OpenRate.logging.LogFactory</ClassName>
+      <Properties>logSeaSatCom.properties</Properties>
+    </LogFactory>
+
+    <ECI>
+      <ClassName>OpenRate.configurationmanager.EventHandler</ClassName>
+      <Port>8086</Port>
+      <MaxConnection>2</MaxConnection>
+      <SemaphoreFile>Semaphore/Semaphore.txt</SemaphoreFile>
+    </ECI>
+
+    <TransactionManagerFactory>
+      <ClassName>OpenRate.transaction.TransactionManagerFactory</ClassName>
+    </TransactionManagerFactory>
+
+    <DataSourceFactory>
+      <ClassName>OpenRate.resource.DataSourceFactory</ClassName>
+      <DataSourceBuilder>
+        <ClassName>OpenRate.db.C3P0DataSource</ClassName>
+      </DataSourceBuilder>
+      <DataSource>
+        <ORDB>
+          <db_url>jdbc:mysql://localhost/orseasat113</db_url>
+          <driver>com.mysql.jdbc.Driver</driver>
+          <username>openrate</username>
+          <password>openrate</password>
+          <ValidationQuery>select 1 from dual</ValidationQuery>
+          <InitQuery>select 1 from dual</InitQuery>
+        </ORDB> 
+        <JBDB>
+          <db_url>jdbc:mysql://localhost/jbseasat113</db_url>
+          <driver>com.mysql.jdbc.Driver</driver>
+          <username>jbilling</username>
+          <password>jbilling</password>
+          <ValidationQuery>select 1 from dual</ValidationQuery>
+          <InitQuery>select 1 from dual</InitQuery>
+        </JBDB>
+      </DataSource>
+    </DataSourceFactory>
+    
+    <CacheFactory>
+      <ClassName>OpenRate.resource.CacheFactory</ClassName>
+      <CacheableClass>
+         <NormCache>
+          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+          <DataSourceType>DB</DataSourceType>
+          <DataSource>ORDB</DataSource>
+          <SelectStatement>select MAP_GROUP,DESTINATION,NUMBER,OLD_PREFIX,NEW_PREFIX from NORM_MAP order by RANK</SelectStatement>
+          <KeyFields>2</KeyFields>
+        </NormCache>
+
+        <RateCache>
+          <ClassName>OpenRate.cache.RUMRateCache</ClassName>
+          <DataSourceType>DB</DataSourceType>
+          <DataSource>ORDB</DataSource>
+          <PriceModelStatement>select PRICE_MODEL,STEP,TIER_FROM,TIER_TO,BEAT,FACTOR,CHARGE_BASE from PRICE_MODEL</PriceModelStatement>
+          <RUMMapStatement>select PRICE_GROUP,PRICE_MODEL,RUM,RESOURCE,RUM_TYPE,RESOURCE_ID,CONSUME_FLAG from RUM_MAP order by STEP</RUMMapStatement>
+        </RateCache>
+
+        <DiscountLookupCache>
+          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+          <DataSourceType>DB</DataSourceType>
+          <DataSource>ORDB</DataSource>
+          <SelectStatement>select OPTION_NAME,TARIFF,ORIGIN,DESTINATION,CDR_TYPE,DISCOUNT from DISCOUNT_MAP</SelectStatement>
+        </DiscountLookupCache>
+
+        <GSMDestLookupCache>
+          <ClassName>OpenRate.cache.BestMatchCache</ClassName>
+          <DataSourceType>DB</DataSourceType>
+          <DataSource>ORDB</DataSource>
+          <SelectStatement>select MAP_GROUP,DESTINATION_PREFIX,MP_ZONE,VP_ZONE,DESCRIPTION from GSM_DESTINATION_MAP</SelectStatement>
+        </GSMDestLookupCache>
+
+        <OriginLookupCache>
+          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+          <DataSourceType>DB</DataSourceType>
+          <DataSource>ORDB</DataSource>
+          <SelectStatement>select MAP_GROUP,ORIGINATION_CODE,MP_ZONE,VP_ZONE,DESCRIPTION from ORIGIN_MAP</SelectStatement>
+          <KeyFields>1</KeyFields>
+        </OriginLookupCache>
+
+        <TimeCache>
+          <ClassName>OpenRate.cache.TimeModelCache</ClassName>
+          <DataSourceType>DB</DataSourceType>
+          <DataSource>ORDB</DataSource>
+          <ModelSelectStatement>select TIME_MODEL_NAME_IN,DAY_IN,FROM_IN,TO_IN,RESULT_OUT from TIME_MODEL_INTERVAL</ModelSelectStatement>
+          <MappingSelectStatement>select PRODUCT_NAME_IN,TIME_MODEL_OUT from TIME_MODEL_MAP</MappingSelectStatement>
+        </TimeCache>
+
+        <GSMPriceLookupCache>
+          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+          <DataSourceType>DB</DataSourceType>
+          <DataSource>ORDB</DataSource>
+          <SelectStatement>select MAP_GROUP,ORIGIN_ZONE,DESTINATION_ZONE,TARIFF,PRICE_GROUP from GSM_PRICE_MAP</SelectStatement>
+        </GSMPriceLookupCache>
+
+        <BalCache>
+          <ClassName>OpenRate.cache.BalanceCache</ClassName>
+          <DataSourceType>DB</DataSourceType>
+          <DataSource>JBDB</DataSource>
+          <DateFormat>Integer</DateFormat>
+          <SelectStatement>select BALANCE_GROUP,COUNTER_ID,RECORD_ID,VALID_FROM,VALID_TO,CURRENT_BAL from COUNTER_BALS</SelectStatement>
+        </BalCache>
+        
+        <JBCustomerCache>
+          <ClassName>SeaSatCom.SeaSatCustomerCache</ClassName>
+          <DataSourceType>DB</DataSourceType>
+          <DataSource>JBDB</DataSource>
+          <CustomerSelectStatement>
+            select po.id, po.user_id, ol.id, ol.description, po.active_since, po.active_until, ol.quantity
+            from purchase_order po, order_line ol
+            where po.id = ol.order_id
+            and  (ol.description like '% OP %'
+            or    ol.description like '% BP %')
+            and   po.deleted = 0
+            and   ol.deleted = 0
+          </CustomerSelectStatement>
+        </JBCustomerCache>
+
+        <SuspensePreparationCache>
+          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+          <DataSourceType>DB</DataSourceType>
+          <DataSource>JBDB</DataSource>
+          <SelectStatement>select MAP_GROUP, ERROR_CODE, OUTPUT from SUSPENSE_MAP order by RANK</SelectStatement>
+          <KeyFields>1</KeyFields>
+        </SuspensePreparationCache>
+
+        <RateOverrideLookupCache>
+          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+          <DataSourceType>DB</DataSourceType>
+          <DataSource>ORDB</DataSource>
+          <SelectStatement>select PRICE_GROUP,OPTION_NAME,ORIGIN,DESTINATION,OVERRIDE_PRICE_GROUP from RATEPLAN_OVERRIDE</SelectStatement>
+        </RateOverrideLookupCache>
+
+        <FFCache>
+          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+          <DataSourceType>DB</DataSourceType>
+          <DataSource>ORDB</DataSource>
+          <SelectStatement>select A_NUMBER,OPTION_NAME,B_NUMBER,'1' from FRIENDS_FAMILY</SelectStatement>
+        </FFCache>
+
+        <SATDestLookupCache>
+          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+          <DataSourceType>DB</DataSourceType>
+          <DataSource>ORDB</DataSource>
+          <SelectStatement>select MAP_GROUP,DESTINATION_DESC,ZONE,DESCRIPTION from SAT_DESTINATION_MAP</SelectStatement>
+          <KeyFields>1</KeyFields>
+        </SATDestLookupCache>
+
+        <SATPriceLookupCache>
+          <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
+          <DataSourceType>DB</DataSourceType>
+          <DataSource>ORDB</DataSource>
+          <SelectStatement>select MAP_GROUP,DESTINATION_ZONE,TARIFF,TIME_ZONE,PRICE_GROUP from SAT_PRICE_MAP</SelectStatement>
+        </SATPriceLookupCache>
+     </CacheableClass>
+    </CacheFactory>
+  </Resource>
+</config>
