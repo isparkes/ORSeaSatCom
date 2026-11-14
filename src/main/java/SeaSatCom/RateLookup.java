@@ -73,7 +73,7 @@ public class RateLookup extends AbstractRUMRateCalc
   {
     RecordError tmpError;
     SeaSatRecord CurrentRecord = (SeaSatRecord) r;
-    CurrentRecord.CreateBreakdown = true;
+    CurrentRecord.createBreakdown = true;
 
     if ((CurrentRecord.RECORD_TYPE == SeaSatRecord.GSM_RECORD_TYPE) |
         (CurrentRecord.RECORD_TYPE == SeaSatRecord.SAT_RECORD_TYPE))

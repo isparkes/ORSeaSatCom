@@ -54,6 +54,7 @@ import OpenRate.adapter.file.FlatFileInputAdapter;
 import OpenRate.record.FlatRecord;
 import OpenRate.record.IRecord;
 import OpenRate.record.TrailerRecord;
+import OpenRate.record.HeaderRecord;
 
 /**
  * This class is an example of how one would write an InputAdapter. An input
@@ -79,7 +80,7 @@ public class GSMInputAdapter
   // ------------------ Start of inherited Plug In functions ---------------------
   // -----------------------------------------------------------------------------
   @Override
-  public IRecord procHeader(IRecord r) {
+  public HeaderRecord procHeader(HeaderRecord r) {
     // reset the record numbering
     StreamRecordNumber = 0;
 
@@ -87,46 +88,46 @@ public class GSMInputAdapter
   }
 
   @Override
-  public IRecord procValidRecord(IRecord r) {
-    String OriginalData;
+  public IRecord procValidRecord(FlatRecord r) {
+    String originalData;
 
     // we have to make a conversion from the flat record to our format
     // which allows the flat file input adapter to do its work without us
     // having to know too much about it.
     FlatRecord originalRecord = (FlatRecord) r;
-    OriginalData = originalRecord.getData();
+    originalData = originalRecord.getData();
 
     tmpDataRecord = new SeaSatRecord();
 
     // map the header
-    if (OriginalData.startsWith("\"P")) {
+    if (originalData.startsWith("\"P")) {
       // header - discard
     } else {
-      tmpDataRecord.mapGSMRecord(OriginalData);
+      tmpDataRecord.mapGSMRecord(originalData);
     }
 
     // Return the created record
     StreamRecordNumber++;
-    tmpDataRecord.RecordNumber = StreamRecordNumber;
+    tmpDataRecord.recordNumber = StreamRecordNumber;
 
     return tmpDataRecord;
   }
 
   @Override
-  public IRecord procErrorRecord(IRecord r) {
+  public IRecord procErrorRecord(FlatRecord r) {
     // The FlatFileInputAdapter is not able to create error records, so we
     // do not have to do anything for this
     return r;
   }
 
   @Override
-  public IRecord procTrailer(IRecord r) {
+  public TrailerRecord procTrailer(TrailerRecord r) {
     TrailerRecord tmpTrailer;
 
     // set the trailer record count
     tmpTrailer = (TrailerRecord) r;
 
     tmpTrailer.setRecordCount(StreamRecordNumber);
-    return (IRecord) tmpTrailer;
+    return tmpTrailer;
   }
 }

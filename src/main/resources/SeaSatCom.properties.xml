@@ -455,7 +455,7 @@
       <DataSource>
         <ORDB>
           <db_url>jdbc:mysql://localhost/orseasat113</db_url>
-          <driver>com.mysql.jdbc.Driver</driver>
+          <driver>com.mysql.cj.jdbc.Driver</driver>
           <username>openrate</username>
           <password>openrate</password>
           <ValidationQuery>select 1 from dual</ValidationQuery>
@@ -463,7 +463,7 @@
         </ORDB> 
         <JBDB>
           <db_url>jdbc:mysql://localhost/jbseasat113</db_url>
-          <driver>com.mysql.jdbc.Driver</driver>
+          <driver>com.mysql.cj.jdbc.Driver</driver>
           <username>jbilling</username>
           <password>jbilling</password>
           <ValidationQuery>select 1 from dual</ValidationQuery>

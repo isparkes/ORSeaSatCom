@@ -85,7 +85,7 @@ public class GSMDestinationLookup extends AbstractBestMatch {
       // only do the destination lookup for originating records
       if (CurrentRecord.Direction.equals("Outgoing")) {
         try {
-          Results = getBestMatchWithChildData(CurrentRecord.Service, CurrentRecord.Norm_B_Number);
+          Results = getBestMatchWithChildData(CurrentRecord.service, CurrentRecord.Norm_B_Number);
         } catch (ArrayIndexOutOfBoundsException aiobe) {
           tmpError = new RecordError("ERR_DESTINATION_INVALID", ErrorType.SPECIAL);
           CurrentRecord.addError(tmpError);

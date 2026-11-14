@@ -76,14 +76,14 @@ public class BalanceOutputAdapter
   }
 
   @Override
-  public Collection<IRecord> procValidRecord(IRecord r) {
+  public Collection<FlatRecord> procValidRecord(IRecord r) {
     FlatRecord tmpOutRecord;
     SeaSatRecord CurrentRecord;
     int i;
     String BalImpactRecord;
     BalanceImpact tmpBalanceImpact;
 
-    Collection<IRecord> Outbatch;
+    Collection<FlatRecord> Outbatch;
     Outbatch = new ArrayList<>();
 
     CurrentRecord = (SeaSatRecord) r;
@@ -94,25 +94,25 @@ public class BalanceOutputAdapter
 
       tmpOutRecord = new FlatRecord();
       tmpOutRecord.setData(BalImpactRecord);
-      Outbatch.add((IRecord) tmpOutRecord);
+      Outbatch.add(tmpOutRecord);
     }
 
     return Outbatch;
   }
 
   @Override
-  public Collection<IRecord> procErrorRecord(IRecord r) {
+  public Collection<FlatRecord> procErrorRecord(IRecord r) {
     FlatRecord tmpOutRecord;
     SeaSatRecord CurrentRecord;
 
-    Collection<IRecord> Outbatch;
+    Collection<FlatRecord> Outbatch;
     Outbatch = new ArrayList<>();
 
     tmpOutRecord = new FlatRecord();
     CurrentRecord = (SeaSatRecord) r;
     tmpOutRecord.setData(CurrentRecord.unmapOriginalData());
 
-    Outbatch.add((IRecord) tmpOutRecord);
+    Outbatch.add(tmpOutRecord);
 
     return Outbatch;
   }

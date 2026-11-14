@@ -66,12 +66,12 @@ import java.util.Collection;
 public class BalDBOutput extends JDBCOutputAdapter {
 
   @Override
-  public Collection<IRecord> procValidRecord(IRecord r) {
+  public Collection<DBRecord> procValidRecord(IRecord r) {
     String[] Fields;
     DBRecord tmpDataRecord;
     FlatRecord tmpInRecord;
 
-    Collection<IRecord> Outbatch;
+    Collection<DBRecord> Outbatch;
     Outbatch = new ArrayList<>();
 
       // we have to make a conversion from the flat record to our format
@@ -95,7 +95,7 @@ public class BalDBOutput extends JDBCOutputAdapter {
 
 
   @Override
-  public Collection<IRecord> procErrorRecord(IRecord r) {
+  public Collection<DBRecord> procErrorRecord(IRecord r) {
     return null;
   }
 }

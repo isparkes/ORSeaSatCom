@@ -84,7 +84,7 @@ public class OriginLookup
       // Prepare the paramters to perform the search on
       tmpSearchParameters[0] = CurrentRecord.Origin;
 
-      RegexGroup = CurrentRecord.Service;
+      RegexGroup = CurrentRecord.service;
 
       Results = getRegexMatchWithChildData(RegexGroup, tmpSearchParameters);
 

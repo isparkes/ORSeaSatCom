@@ -66,10 +66,10 @@ public class SuspenseOutput
         extends FlatFileOutputAdapter {
 
   @Override
-  public Collection<IRecord> procValidRecord(IRecord r) {
+  public Collection<FlatRecord> procValidRecord(IRecord r) {
     String ERROR_CODE;
     int RECYCLE_COUNT;
-    Collection<IRecord> Outbatch;
+    Collection<FlatRecord> Outbatch;
     Outbatch = new ArrayList<>();
     FlatRecord tmpOutRecord = new FlatRecord();
     SeaSatRecord tmpInRecord = (SeaSatRecord) r;
@@ -93,10 +93,10 @@ public class SuspenseOutput
   }
 
   @Override
-  public Collection<IRecord> procErrorRecord(IRecord r) {
+  public Collection<FlatRecord> procErrorRecord(IRecord r) {
     String ERROR_CODE;
     int RECYCLE_COUNT;
-    Collection<IRecord> Outbatch;
+    Collection<FlatRecord> Outbatch;
     Outbatch = new ArrayList<>();
     FlatRecord tmpOutRecord = new FlatRecord();
     SeaSatRecord tmpInRecord = (SeaSatRecord) r;

@@ -160,8 +160,8 @@ public class PromoCalcPreRating extends AbstractBalanceHandlerPlugIn {
               tmpStartDate = conversionUtils.getUTCDayStart(CurrentRecord.BillingCycleStart);
               tmpEndDate = conversionUtils.getUTCDayEnd(CurrentRecord.BillingCycleEnd);
             } else if (tmpRatingControlItem.Period.equalsIgnoreCase("d")) {
-              tmpStartDate = conversionUtils.getUTCDayStart(CurrentRecord.EventStartDate);
-              tmpEndDate = conversionUtils.getUTCDayEnd(CurrentRecord.EventStartDate);
+              tmpStartDate = conversionUtils.getUTCDayStart(CurrentRecord.eventStartDate);
+              tmpEndDate = conversionUtils.getUTCDayEnd(CurrentRecord.eventStartDate);
             }
 
             // perform the discount
@@ -173,7 +173,7 @@ public class PromoCalcPreRating extends AbstractBalanceHandlerPlugIn {
               CurrentRecord.DiscountRule = "ConsumeDUR";
               CurrentRecord.DiscountGranted = tmpDiscInfo.getDiscountedValue();
               CurrentRecord.RecId = tmpDiscInfo.getRecId();
-              CurrentRecord.CounterCycle = tmpDiscInfo.getCounterId();
+              CurrentRecord.counterCycle = tmpDiscInfo.getCounterId();
             }
           }
         }
@@ -197,8 +197,8 @@ public class PromoCalcPreRating extends AbstractBalanceHandlerPlugIn {
               tmpStartDate = conversionUtils.getUTCDayStart(CurrentRecord.BillingCycleStart);
               tmpEndDate = conversionUtils.getUTCDayEnd(CurrentRecord.BillingCycleEnd);
             } else if (tmpRatingControlItem.Period.equalsIgnoreCase("d")) {
-              tmpStartDate = conversionUtils.getUTCDayStart(CurrentRecord.EventStartDate);
-              tmpEndDate = conversionUtils.getUTCDayEnd(CurrentRecord.EventStartDate);
+              tmpStartDate = conversionUtils.getUTCDayStart(CurrentRecord.eventStartDate);
+              tmpEndDate = conversionUtils.getUTCDayEnd(CurrentRecord.eventStartDate);
             }
 
             // perform the discount
@@ -210,7 +210,7 @@ public class PromoCalcPreRating extends AbstractBalanceHandlerPlugIn {
               CurrentRecord.DiscountRule = "ConsumeEVT";
               CurrentRecord.DiscountGranted = tmpDiscInfo.getDiscountedValue();
               CurrentRecord.RecId = tmpDiscInfo.getRecId();
-              CurrentRecord.CounterCycle = tmpDiscInfo.getCounterId();
+              CurrentRecord.counterCycle = tmpDiscInfo.getCounterId();
             }
           }
         }
@@ -234,8 +234,8 @@ public class PromoCalcPreRating extends AbstractBalanceHandlerPlugIn {
               tmpStartDate = conversionUtils.getUTCDayStart(CurrentRecord.BillingCycleStart);
               tmpEndDate = conversionUtils.getUTCDayEnd(CurrentRecord.BillingCycleEnd);
             } else if (tmpRatingControlItem.Period.equalsIgnoreCase("d")) {
-              tmpStartDate = conversionUtils.getUTCDayStart(CurrentRecord.EventStartDate);
-              tmpEndDate = conversionUtils.getUTCDayEnd(CurrentRecord.EventStartDate);
+              tmpStartDate = conversionUtils.getUTCDayStart(CurrentRecord.eventStartDate);
+              tmpEndDate = conversionUtils.getUTCDayEnd(CurrentRecord.eventStartDate);
             }
 
             // perform the discount
@@ -247,7 +247,7 @@ public class PromoCalcPreRating extends AbstractBalanceHandlerPlugIn {
               CurrentRecord.DiscountRule = "ConsumeVOL";
               CurrentRecord.DiscountGranted = tmpDiscInfo.getDiscountedValue();
               CurrentRecord.RecId = tmpDiscInfo.getRecId();
-              CurrentRecord.CounterCycle = tmpDiscInfo.getCounterId();
+              CurrentRecord.counterCycle = tmpDiscInfo.getCounterId();
             }
 
             if (tmpDiscInfo.isBalanceCreated()) {

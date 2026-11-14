@@ -83,7 +83,7 @@ public class JBCustomerTariffLookup extends AbstractJBCustomerLookup {
       //Lookup the customer
       Subscription = CurrentRecord.GuidingKey;
       try {
-        CurrentRecord.JBUserId = getCustId(CurrentRecord.GuidingKey, CurrentRecord.UTCEventDate);
+        CurrentRecord.JBUserId = getCustId(CurrentRecord.GuidingKey, CurrentRecord.utcEventDate);
       } catch (Exception ex) {
         CurrentRecord.addError(new RecordError("ERR_JB_CUST_NOT_FOUND", ErrorType.DATA_NOT_FOUND));
 
@@ -93,7 +93,7 @@ public class JBCustomerTariffLookup extends AbstractJBCustomerLookup {
 
       // *************** Look for service level products/options ***************
       try {
-        Products = getProductList(CurrentRecord.GuidingKey, CurrentRecord.ProductService, Subscription, CurrentRecord.UTCEventDate);
+        Products = getProductList(CurrentRecord.GuidingKey, CurrentRecord.ProductService, Subscription, CurrentRecord.utcEventDate);
       } catch (Exception ex) {
         CurrentRecord.addError(new RecordError("ERR_JB_SERVICE_PROD_LOOKUP", ErrorType.DATA_NOT_FOUND));
 
@@ -142,9 +142,9 @@ public class JBCustomerTariffLookup extends AbstractJBCustomerLookup {
       // *************** Look for package level products/options ***************
       try {
         if ((CurrentRecord.RECORD_TYPE == SeaSatRecord.GSM_RECORD_TYPE)) {
-          Products = getProductList(CurrentRecord.GuidingKey, "PACKAGE", Subscription, CurrentRecord.UTCEventDate);
+          Products = getProductList(CurrentRecord.GuidingKey, "PACKAGE", Subscription, CurrentRecord.utcEventDate);
         } else if ((CurrentRecord.RECORD_TYPE == SeaSatRecord.SAT_RECORD_TYPE)) {
-          Products = getProductList(CurrentRecord.GuidingKey, "SPACKAGE", Subscription, CurrentRecord.UTCEventDate);
+          Products = getProductList(CurrentRecord.GuidingKey, "SPACKAGE", Subscription, CurrentRecord.utcEventDate);
         }
       } catch (Exception ex) {
         CurrentRecord.addError(new RecordError("ERR_JB_PACKAGE_PROD_LOOKUP", ErrorType.DATA_NOT_FOUND));

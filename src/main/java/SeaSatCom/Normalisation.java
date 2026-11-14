@@ -86,7 +86,7 @@ public class Normalisation
       tmpSearchParameters[0] = CurrentRecord.Destination;
       tmpSearchParameters[1] = CurrentRecord.B_Number;
       
-      RegexGroup = CurrentRecord.Service;
+      RegexGroup = CurrentRecord.service;
       
       Results = getRegexMatchWithChildData(RegexGroup,tmpSearchParameters);
 

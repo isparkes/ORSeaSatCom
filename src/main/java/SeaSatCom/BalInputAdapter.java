@@ -52,6 +52,9 @@ package SeaSatCom;
 
 import OpenRate.adapter.file.FlatFileInputAdapter;
 import OpenRate.record.IRecord;
+import OpenRate.record.FlatRecord;
+import OpenRate.record.HeaderRecord;
+import OpenRate.record.TrailerRecord;
 
 /**
  * This class is an example of how one would write an InputAdapter. An input
@@ -70,25 +73,25 @@ public class BalInputAdapter
   // -----------------------------------------------------------------------------
 
   @Override
-  public IRecord procHeader(IRecord r)
+  public HeaderRecord procHeader(HeaderRecord r)
   {
     return r;
   }
 
   @Override
-  public IRecord procValidRecord(IRecord r)
+  public IRecord procValidRecord(FlatRecord r)
   {
     return r;
   }
 
   @Override
-  public IRecord procErrorRecord(IRecord r)
+  public IRecord procErrorRecord(FlatRecord r)
   {
     return r;
   }
 
   @Override
-  public IRecord procTrailer(IRecord r)
+  public TrailerRecord procTrailer(TrailerRecord r)
   {
     return r;
   }

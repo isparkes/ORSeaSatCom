@@ -222,9 +222,9 @@ public class SeaSatRecord extends RatingRecord {
    * is "-", the call was made in France If the DESTINATION field is "-", the
    * call is a FRA-FRA call
    *
-   * @param OriginalData The original data to map
+   * @param originalData The original data to map
    */
-  public void mapGSMRecord(String OriginalData) {
+  public void mapGSMRecord(String originalData) {
     RecordError tmpError;
     String tmpDate;
     String tmpDurBits[];
@@ -235,11 +235,11 @@ public class SeaSatRecord extends RatingRecord {
 
     // GSM record
     this.RECORD_TYPE = SeaSatRecord.GSM_RECORD_TYPE;
-    this.OriginalData = OriginalData;
+    this.originalData = originalData;
 
     // Detect recycle case
-    if (this.OriginalData.startsWith(RECYCLE_TAG)) {
-      StringBuffer record = new StringBuffer(this.OriginalData);
+    if (this.originalData.startsWith(RECYCLE_TAG)) {
+      StringBuffer record = new StringBuffer(this.originalData);
 
       // remove RecycleTag from record
       record = record.delete(0, record.indexOf(";") + 1);
@@ -255,10 +255,10 @@ public class SeaSatRecord extends RatingRecord {
       record = record.delete(0, record.indexOf(";") + 1);
 
       // reset the original data
-      this.OriginalData = record.toString();
+      this.originalData = record.toString();
     }
 
-    this.fields = this.OriginalData.split(";");
+    this.fields = this.originalData.split(";");
 
     // Check we have the right number of fields
     if (fields.length != GSM_FIELD_COUNT) {
@@ -283,7 +283,7 @@ public class SeaSatRecord extends RatingRecord {
     BalanceGroup = Integer.parseInt(GuidingKey);
     Destination = stripQuoteChars(getField(IDX_GSM_CALL_DESTINATION));
     Origin = stripQuoteChars(getField(IDX_GSM_CALL_ORIGIN));
-    Service = "GSM";
+    service = "GSM";
 
     // get the billing cycle, used for controlling the counter periods
     String[] BillingPeriod = stripQuoteChars(getField(IDX_GSM_USAGE_PERIOD)).split(" - ");
@@ -314,8 +314,8 @@ public class SeaSatRecord extends RatingRecord {
     try {
       tmpDate = stripQuoteChars(getField(IDX_GSM_CALL_DATE)) + " " + stripQuoteChars(getField(IDX_GSM_CALL_TIME));
       tmpDate = tmpDate.replace("h", ":");
-      EventStartDate = sdfInput.parse(tmpDate);
-      UTCEventDate = EventStartDate.getTime() / 1000;
+      eventStartDate = sdfInput.parse(tmpDate);
+      utcEventDate = eventStartDate.getTime() / 1000;
     } catch (ParseException ex) {
       tmpError = new RecordError("ERR_DATE_INVALID", ErrorType.DATA_VALIDATION);
       this.addError(tmpError);
@@ -491,7 +491,7 @@ public class SeaSatRecord extends RatingRecord {
 
     // Create a charge packet
     ChargePacket tmpCP = new ChargePacket();
-    tmpCP.service = Service;
+    tmpCP.service = service;
     tmpCP.packetType = "R";
     tmpCP.ratePlanName = "P.1";
     tmpCP.zoneModel = CDRType;
@@ -502,9 +502,9 @@ public class SeaSatRecord extends RatingRecord {
   /**
    * Utility function to map a main record for the SAT Input file type
    *
-   * @param OriginalData The original data to map
+   * @param originalData The original data to map
    */
-  public void mapSATRecord(String OriginalData) {
+  public void mapSATRecord(String originalData) {
     RecordError tmpError;
     String tmpDate;
     String tmpDuration;
@@ -515,11 +515,11 @@ public class SeaSatRecord extends RatingRecord {
 
     // Satellite record
     this.RECORD_TYPE = SeaSatRecord.SAT_RECORD_TYPE;
-    this.OriginalData = OriginalData;
+    this.originalData = originalData;
 
     // Detect recycle case
-    if (this.OriginalData.startsWith(RECYCLE_TAG)) {
-      StringBuffer record = new StringBuffer(this.OriginalData);
+    if (this.originalData.startsWith(RECYCLE_TAG)) {
+      StringBuffer record = new StringBuffer(this.originalData);
 
       // remove RecycleTag from record
       record = record.delete(0, record.indexOf(";") + 1);
@@ -535,11 +535,11 @@ public class SeaSatRecord extends RatingRecord {
       record = record.delete(0, record.indexOf(";") + 1);
 
       // reset the original data
-      this.OriginalData = record.toString();
+      this.originalData = record.toString();
     }
 
     // parse the strange data format
-    tmpOrigData = OriginalData.replaceAll("\",\"", ";");
+    tmpOrigData = originalData.replaceAll("\",\"", ";");
     tmpOrigData = tmpOrigData.replaceAll("\",", ";");
     tmpOrigData = tmpOrigData.replaceAll(",\"", ";");
     tmpOrigData = tmpOrigData.replaceAll("\"", "");
@@ -562,19 +562,19 @@ public class SeaSatRecord extends RatingRecord {
     GuidingKey = stripQuoteChars(getField(IDX_SAT_TERMINAL));
     Destination = stripQuoteChars(getField(IDX_SAT_DEST_CODE));
     Origin = "SAT";
-    Service = "SAT";
+    service = "SAT";
     OriginZone = "Satellite";
     OriginDescription = "Satellite";
 
     // Get the CDR date, and the UTC version of it
     try {
       tmpDate = stripQuoteChars(getField(IDX_SAT_DATE)) + " " + stripQuoteChars(getField(IDX_SAT_TIME));
-      EventStartDate = sdfInput.parse(tmpDate);
-      UTCEventDate = EventStartDate.getTime() / 1000;
+      eventStartDate = sdfInput.parse(tmpDate);
+      utcEventDate = eventStartDate.getTime() / 1000;
 
       // Set the default end date - we need to have this set for the
       // time lookup
-      EventEndDate = sdfInput.parse(tmpDate);
+      eventEndDate = sdfInput.parse(tmpDate);
     } catch (ParseException ex) {
       tmpError = new RecordError("ERR_DATE_INVALID", ErrorType.DATA_VALIDATION);
       this.addError(tmpError);
@@ -646,7 +646,7 @@ public class SeaSatRecord extends RatingRecord {
           this.addError(tmpError);
           return;
         } // Adjust the end date - required by time splitting
-        EventEndDate.setTime(UTCEventDate + longQuantity * 1000);
+        eventEndDate.setTime(utcEventDate + longQuantity * 1000);
         setRUMValue("DUR", Quantity);
         break;
       case "bit":
@@ -691,10 +691,10 @@ public class SeaSatRecord extends RatingRecord {
 
     // Create a charge packet
     ChargePacket tmpCP = new ChargePacket();
-    tmpCP.service = Service;
+    tmpCP.service = service;
     tmpCP.packetType = "R";
     tmpCP.ratePlanName = "";
-    tmpCP.zoneModel = Service;
+    tmpCP.zoneModel = service;
     tmpCP.timeSplitting = 0;
     this.addChargePacket(tmpCP);
   }
@@ -876,7 +876,7 @@ public class SeaSatRecord extends RatingRecord {
       return tmpReassemble.toString();
     }
 
-    return this.OriginalData;
+    return this.originalData;
   }
 
   public String stripQuoteChars(String input) {
@@ -902,7 +902,7 @@ public class SeaSatRecord extends RatingRecord {
 
       recordData.append(this.JBUserId);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
-      recordData.append(this.Service);
+      recordData.append(this.service);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
       recordData.append(this.CDRType);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
@@ -930,7 +930,7 @@ public class SeaSatRecord extends RatingRecord {
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
       recordData.append(this.DiscountRUM);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
-      recordData.append(this.CounterCycle);
+      recordData.append(this.counterCycle);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
       recordData.append(this.RecId);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
@@ -964,7 +964,7 @@ public class SeaSatRecord extends RatingRecord {
 
       recordData.append(this.JBUserId);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
-      recordData.append(this.Service);
+      recordData.append(this.service);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
       recordData.append(this.CDRType);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
@@ -992,7 +992,7 @@ public class SeaSatRecord extends RatingRecord {
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
       recordData.append(this.DiscountRUM);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
-      recordData.append(this.CounterCycle);
+      recordData.append(this.counterCycle);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
       recordData.append(this.RecId);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
@@ -1027,7 +1027,7 @@ public class SeaSatRecord extends RatingRecord {
 
       recordData.append(this.JBUserId);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
-      recordData.append(this.Service);
+      recordData.append(this.service);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
       recordData.append(this.CDRType);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
@@ -1066,7 +1066,7 @@ public class SeaSatRecord extends RatingRecord {
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
       recordData.append(this.DiscountRUM);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
-      recordData.append(this.CounterCycle);
+      recordData.append(this.counterCycle);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
       recordData.append(this.RecId);
       recordData.append(SeaSatRecord.FIELD_SPLITTER);
@@ -1097,8 +1097,8 @@ public class SeaSatRecord extends RatingRecord {
     if (this.RECORD_TYPE == 10) {
       // Format the fields
       tmpDumpList.add("============ HEADER RECORD ============");
-      tmpDumpList.add("  Record Number   = <" + this.RecordNumber + ">");
-      tmpDumpList.add("  original record = <" + this.OriginalData + ">");
+      tmpDumpList.add("  Record Number   = <" + this.recordNumber + ">");
+      tmpDumpList.add("  original record = <" + this.originalData + ">");
     }
     int OptionCount;
 
@@ -1106,12 +1106,12 @@ public class SeaSatRecord extends RatingRecord {
             | (this.RECORD_TYPE == SeaSatRecord.SAT_RECORD_TYPE)) {
       // Format the fields
       tmpDumpList.add("============ DETAIL RECORD ============");
-      tmpDumpList.add("  Record Number   = <" + this.RecordNumber + ">");
-      tmpDumpList.add("  Technology      = <" + this.Service + ">");
+      tmpDumpList.add("  Record Number   = <" + this.recordNumber + ">");
+      tmpDumpList.add("  Technology      = <" + this.service + ">");
       tmpDumpList.add("  B Number        = <" + this.B_Number + ">");
       tmpDumpList.add("  Customer        = <" + this.getField(IDX_GSM_A_CUSTOMER) + ">");
       tmpDumpList.add("  Norm B Number   = <" + this.Norm_B_Number + ">");
-      tmpDumpList.add("  CDR Start Date  = <" + this.EventStartDate + ">");
+      tmpDumpList.add("  CDR Start Date  = <" + this.eventStartDate + ">");
       tmpDumpList.add("  Original UOM    = <" + this.UOM + ">");
       tmpDumpList.add("  Rateable Qty    = <" + this.Quantity + ">");
       tmpDumpList.add("  Origin          = <" + this.Origin + ">");
@@ -1127,8 +1127,8 @@ public class SeaSatRecord extends RatingRecord {
       tmpDumpList.add("  Jbilling Desc   = <" + this.JBDescription + ">");
       tmpDumpList.add("  Balance Group   = <" + this.BalanceGroup + ">");
       tmpDumpList.add("       --- Rating Attributes ---");
-      tmpDumpList.add("  CDR UTC Date    = <" + this.UTCEventDate + ">");
-      tmpDumpList.add("  Service         = <" + this.ProductService + ">");
+      tmpDumpList.add("  CDR UTC Date    = <" + this.utcEventDate + ">");
+      tmpDumpList.add("  service         = <" + this.ProductService + ">");
       tmpDumpList.add("  Tariff          = <" + this.UserTariff + ">");
       tmpDumpList.add("  Discount        = <" + this.UsedDiscount + ">");
       tmpDumpList.add("  Orig Tariff     = <" + this.OriginalUserTariff + ">");
@@ -1143,7 +1143,7 @@ public class SeaSatRecord extends RatingRecord {
       tmpDumpList.add("  Discount Used   = <" + this.UsedDiscount + ">");
       tmpDumpList.add("  Discount Rule   = <" + this.DiscountRule + ">");
       tmpDumpList.add("  Discount RUM    = <" + this.DiscountRUM + ">");
-      tmpDumpList.add("  Counter Cycle   = <" + this.CounterCycle + ">");
+      tmpDumpList.add("  Counter Cycle   = <" + this.counterCycle + ">");
       tmpDumpList.add("  Counter Rec Id  = <" + this.RecId + ">");
       tmpDumpList.add("  Output Stream   = <" + this.getOutputs().toString() + ">");
       tmpDumpList.add("  Recycle count   = <" + this.Recycle_Count + ">");
@@ -1167,8 +1167,8 @@ public class SeaSatRecord extends RatingRecord {
     if (this.RECORD_TYPE == 90) {
       // Format the fields
       tmpDumpList.add("============ TRAILER RECORD ============");
-      tmpDumpList.add("  Record Number   = <" + this.RecordNumber + ">");
-      tmpDumpList.add("  original record = <" + this.OriginalData + ">");
+      tmpDumpList.add("  Record Number   = <" + this.recordNumber + ">");
+      tmpDumpList.add("  original record = <" + this.originalData + ">");
     }
 
     tmpErrorCount = this.getErrors().size();
