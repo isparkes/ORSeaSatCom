@@ -1,0 +1,7 @@
+Load data local infile '<FILENAME>' into table CDR_SORT
+fields terminated by ';'
+enclosed by '"'
+lines terminated by '\r\n'
+Ignore 1 lines
+(Periodedeconsommation,Periodedabonnement,Dateemissionfacture,NFacturegroupee,NomdeTitulaire,NdeTitulaire,NdePF,CodeListe,NdeLigne,Nomutilisateur,NdeContrat,Typedefacturation,
+Typedappel,Origine,Destination,Numeroappele,Datededebut,Heurededebut,Quantitereelle,Quantitefacturee,Unitedoeuvre,EURHT);

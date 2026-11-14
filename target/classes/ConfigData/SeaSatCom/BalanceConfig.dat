@@ -1,0 +1,86 @@
+# Temporary configuration to create balances
+# The entries are in the format:
+#   ProductName;CounterId;BundleStartBalance;Period
+#     Period: M = Monthly, D = Daily
+
+# Duration discount of 50 Minutes (=3000 seconds)
+DUR;50Min;400100;3000;M
+
+# Duration discount of 100 Minutes (=6000 seconds)
+DUR;100Min;400101;6000;M
+
+# Duration discount of 150 Minutes (=9000 seconds)
+DUR;150Min;400102;9000;M
+
+# Duration discount of 200 Minutes (=12000 seconds)
+DUR;200Min;400103;12000;M
+
+# Duration discount of 300 Minutes (=18000 seconds)
+DUR;300Min;400104;18000;M
+
+# Duration discount of 600 Minutes (=36000 seconds)
+DUR;600Min;400105;36000;M
+
+# Duration discount of 900 Minutes (=54000 seconds)
+DUR;900Min;400106;54000;M
+
+# Event discount of 60 SMS
+EVT;60SMS;400200;60;M
+
+# Event discount of 20 MMS
+EVT;20MMS;400201;20;M
+
+# Volume discount of 50 MB
+VOL;50Mo;400300;50;M
+
+# Volume discount of 250 MB
+VOL;250Mo;400301;250;M
+
+# Volume discount of 3000 MB
+VOL;3Go;400302;3000;M
+
+# Volume discount of 5000 MB
+VOL;5Go;400303;5000;M
+
+# Volume discount of 50 MB Daily
+VOL;50MB_D;400400;50;D
+
+# Volume discount of 3 MB Daily
+VOL;3MB_D;400401;3;D
+
+# Volume discount of 150 MB
+VOL;150MB;400304;150;M
+
+# Volume discount of 500 MB
+VOL;500MB;400305;500;M
+
+# Volume discount of 10 MB
+VOL;10MB;400306;10;M
+
+# Volume discount of 10 MB for BMail
+VOL;BMail_10MB;400307;10;M
+
+# Volume discount of 10 MB for Roaming BMail Daily
+VOL;BMail_10MB_D;400308;10;D
+
+# Volume discount of 2 MB for M2M
+VOL;2MB_M2M;400500;2;M
+
+# Volume discount of 5 MB for M2M
+VOL;5MB_M2M;400501;5;M
+
+# Volume discount of 20 MB for M2M
+VOL;20MB_M2M;400502;20;M
+
+# Volume discount of 50 MB for M2M
+VOL;50MB_M2M;400503;50;M
+
+# Volume discount of 175 MB for M2M
+VOL;175MB_M2M;400504;175;M
+
+# Duration discount of 50 Min for M2M (=3000 sec)
+DUR;50Min_M2M;400600;3000;M
+
+# Duration discount of 240 Min for M2M (=14400 sec)
+DUR;240Min_M2M;400601;14400;M
+
