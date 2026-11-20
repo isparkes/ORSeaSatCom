@@ -45,12 +45,30 @@
         </excludes>
     </fileSet>
 
-    <!-- Copy over all the scripts we have -->
+    <!-- Launcher scripts for the unpacked distribution -->
     <fileSet>
       <directory>src/main/bin</directory>
       <outputDirectory>bin</outputDirectory>
+      <fileMode>0755</fileMode>
       <includes>
-        <include>**/*.template</include>
+        <include>*.sh</include>
+      </includes>
+    </fileSet>
+
+    <!-- Documentation and licence at the root of the distribution -->
+    <fileSet>
+      <directory>src/main/dist</directory>
+      <outputDirectory>.</outputDirectory>
+      <includes>
+        <include>README.md</include>
+      </includes>
+    </fileSet>
+
+    <fileSet>
+      <directory>.</directory>
+      <outputDirectory>.</outputDirectory>
+      <includes>
+        <include>LICENSE</include>
       </includes>
     </fileSet>
 
@@ -60,37 +78,39 @@
       <outputDirectory>properties</outputDirectory>
       <includes>
         <include>SeaSatCom.properties.xml</include>
-        <include>logSeaSatCom.properties</include>
-        <include>log4j.dtd</include>
+        <include>logSeaSatCom.xml</include>
       </includes>
     </fileSet>
 
-    <!-- Force the directories with descriptions -->
+    <!-- The database dumps and stored procedures, so the distribution can
+         be set up as shipped -->
     <fileSet>
-      <directory>src/main/resources</directory>
-      <outputDirectory>Semaphore</outputDirectory>
+      <directory>db-backups</directory>
+      <outputDirectory>db</outputDirectory>
       <includes>
-        <include>Semaphore-Readme.txt</include>
+        <include>OR-DB-Backup-2009-12-30.zip</include>
+        <include>JB-DB-Backup-2009-12-30.zip</include>
       </includes>
     </fileSet>
 
     <fileSet>
-      <directory>src/main/resources</directory>
-      <outputDirectory>log</outputDirectory>
+      <directory>ConfigData/SeaSatCom</directory>
+      <outputDirectory>db</outputDirectory>
       <includes>
-        <include>Log-Readme.txt</include>
+        <include>SP.sql</include>
       </includes>
     </fileSet>
-    
+
+    <!-- Sample traffic, so it can be tried out as shipped -->
     <fileSet>
-      <directory>src/main/resources</directory>
+      <directory>Data/SeaSatCom</directory>
       <outputDirectory>Data/SeaSatCom</outputDirectory>
       <includes>
-        <include>Data-Readme.txt</include>
+        <include>*.zip</include>
       </includes>
     </fileSet>
-    
-    <!-- Copy over the Configuration files to the zip -->
+
+    <!-- Configuration the balance handling reads at runtime -->
     <fileSet>
       <directory>src/main/resources/ConfigData/SeaSatCom</directory>
       <outputDirectory>ConfigData/SeaSatCom</outputDirectory>
@@ -98,14 +118,6 @@
         <include>BalanceConfig.dat</include>
       </includes>
     </fileSet>
-    
-    <!-- Copy over the Configuration files for running in IDE / mvn -->
-    <fileSet>
-      <directory>src/main/resources/ConfigData/SeaSatCom</directory>
-      <outputDirectory>../ConfigData/SeaSatCom</outputDirectory>
-      <includes>
-        <include>BalanceConfig.dat</include>
-      </includes>
-    </fileSet>
+
   </fileSets>
 </assembly>

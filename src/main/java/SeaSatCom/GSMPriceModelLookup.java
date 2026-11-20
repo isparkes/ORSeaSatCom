@@ -21,6 +21,7 @@ import OpenRate.record.ErrorType;
 import OpenRate.record.IRecord;
 import OpenRate.record.RecordError;
 import OpenRate.record.TimePacket;
+import java.util.ArrayList;
 
 /**
  * This class looks up the price model to use, based on the roaming scenario
@@ -46,6 +47,11 @@ public class GSMPriceModelLookup
     SeaSatRecord CurrentRecord = (SeaSatRecord) r;
 
     if (CurrentRecord.RECORD_TYPE == SeaSatRecord.GSM_RECORD_TYPE) {
+      // Pack rating adds charge packets. They cannot go onto the record
+      // while we are iterating over it, so they are collected here and
+      // added once the loop is done.
+      ArrayList<ChargePacket> packPackets = new ArrayList<>();
+
       for (ChargePacket tmpCP : CurrentRecord.getChargePackets()) {
         for (TimePacket tmpTZ : tmpCP.getTimeZones()) {
           // Prepare the paramters to perform the search on
@@ -88,8 +94,13 @@ public class GSMPriceModelLookup
           }
 
           tmpTZ.priceGroup = RegexResult;
-          CurrentRecord.addChargePacket(packCP);
+          packCP.addTimeZone(tmpTZ);
+          packPackets.add(packCP);
         }
+      }
+
+      for (ChargePacket packCP : packPackets) {
+        CurrentRecord.addChargePacket(packCP);
       }
     }
     return r;

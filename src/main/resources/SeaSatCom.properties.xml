@@ -433,7 +433,7 @@
   <Resource>
     <LogFactory>
       <ClassName>OpenRate.logging.LogFactory</ClassName>
-      <Properties>logSeaSatCom.properties</Properties>
+      <Properties>logSeaSatCom.xml</Properties>
     </LogFactory>
 
     <ECI>
@@ -454,7 +454,7 @@
       </DataSourceBuilder>
       <DataSource>
         <ORDB>
-          <db_url>jdbc:mysql://localhost/orseasat113</db_url>
+          <db_url>jdbc:mysql://localhost:3308/orseasat113</db_url>
           <driver>com.mysql.cj.jdbc.Driver</driver>
           <username>openrate</username>
           <password>openrate</password>
@@ -462,7 +462,7 @@
           <InitQuery>select 1 from dual</InitQuery>
         </ORDB> 
         <JBDB>
-          <db_url>jdbc:mysql://localhost/jbseasat113</db_url>
+          <db_url>jdbc:mysql://localhost:3308/jbseasat113</db_url>
           <driver>com.mysql.cj.jdbc.Driver</driver>
           <username>jbilling</username>
           <password>jbilling</password>
@@ -479,7 +479,7 @@
           <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
           <DataSourceType>DB</DataSourceType>
           <DataSource>ORDB</DataSource>
-          <SelectStatement>select MAP_GROUP,DESTINATION,NUMBER,OLD_PREFIX,NEW_PREFIX from NORM_MAP order by RANK</SelectStatement>
+          <SelectStatement>select MAP_GROUP,DESTINATION,NUMBER,OLD_PREFIX,NEW_PREFIX from NORM_MAP order by `RANK`</SelectStatement>
           <KeyFields>2</KeyFields>
         </NormCache>
 
@@ -488,7 +488,7 @@
           <DataSourceType>DB</DataSourceType>
           <DataSource>ORDB</DataSource>
           <PriceModelStatement>select PRICE_MODEL,STEP,TIER_FROM,TIER_TO,BEAT,FACTOR,CHARGE_BASE from PRICE_MODEL</PriceModelStatement>
-          <RUMMapStatement>select PRICE_GROUP,PRICE_MODEL,RUM,RESOURCE,RUM_TYPE,RESOURCE_ID,CONSUME_FLAG from RUM_MAP order by STEP</RUMMapStatement>
+          <RUMMapStatement>select PRICE_GROUP,PRICE_MODEL,RUM,RESOURCE,RUM_TYPE,RESOURCE_ID from RUM_MAP order by STEP</RUMMapStatement>
         </RateCache>
 
         <DiscountLookupCache>
@@ -540,8 +540,13 @@
           <ClassName>SeaSatCom.SeaSatCustomerCache</ClassName>
           <DataSourceType>DB</DataSourceType>
           <DataSource>JBDB</DataSource>
+          <!-- How the validity dates come back from jBilling. The cache
+               defaults to a format with milliseconds, which these do not
+               have, and an unparsed date silently becomes 0. -->
+          <DateFormat>yyyy-MM-dd HH:mm:ss</DateFormat>
           <CustomerSelectStatement>
-            select po.id, po.user_id, ol.id, ol.description, po.active_since, po.active_until, ol.quantity
+            select po.id, po.user_id, ol.id, ol.description, po.active_since, po.active_until,
+                   cast(ol.quantity as signed)
             from purchase_order po, order_line ol
             where po.id = ol.order_id
             and  (ol.description like '% OP %'
@@ -555,7 +560,7 @@
           <ClassName>OpenRate.cache.RegexMatchCache</ClassName>
           <DataSourceType>DB</DataSourceType>
           <DataSource>JBDB</DataSource>
-          <SelectStatement>select MAP_GROUP, ERROR_CODE, OUTPUT from SUSPENSE_MAP order by RANK</SelectStatement>
+          <SelectStatement>select MAP_GROUP, ERROR_CODE, OUTPUT from SUSPENSE_MAP order by `RANK`</SelectStatement>
           <KeyFields>1</KeyFields>
         </SuspensePreparationCache>
 

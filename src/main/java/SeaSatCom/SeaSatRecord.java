@@ -461,6 +461,16 @@ public class SeaSatRecord extends RatingRecord {
     tmpCP.ratePlanName = "P.1";
     tmpCP.zoneModel = CDRType;
     tmpCP.timeModel = "FLAT";
+
+    // GSM traffic is not time split here - the tariffs are flat - but the
+    // price group lives on a time packet inside the charge packet, so there
+    // has to be one for the price model lookup to write into. The satellite
+    // pipeline gets its time packets from the time model lookup instead.
+    TimePacket tmpTZ = new TimePacket();
+    tmpTZ.timeModel = "FLAT";
+    tmpTZ.timeResult = "FLAT";
+    tmpCP.addTimeZone(tmpTZ);
+
     this.addChargePacket(tmpCP);
   }
 

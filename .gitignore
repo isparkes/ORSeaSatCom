@@ -1,0 +1,27 @@
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+/.vscode/
+/.settings/
+.project
+.factorypath
+.classpath
+
+# Unpacked database dumps - db.sh unzips these from the archives beside them
+/db-backups/*.sql
+
+# Runtime output
+/log/*.log
+/Semaphore/*.txt
+/Data/SeaSatCom/*.csv
+/Data/SeaSatCom/*.done
+/Data/SeaSatCom/*.dump
+/Data/SeaSatCom/*.Gout
+/Data/SeaSatCom/*.Sout
+/Data/SeaSatCom/*.recycle
+/Data/SeaSatCom/*.rej
+/Data/SeaSatCom/*.?err
+/Data/SeaSatCom/Balance/*.out

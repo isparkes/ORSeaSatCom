@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Logging configuration for the SeaSatCom rating application.
+
+  OpenRate asks for loggers by name: "Framework", "ErrorLog" and "Statistics"
+  come from the framework itself, and each pipeline logs under its own name as
+  declared in SeaSatCom.properties.xml.
+-->
+<Configuration status="WARN">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>
+
+    <File name="FrameworkAppender" fileName="log/Framework.log">
+      <PatternLayout>
+        <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+      </PatternLayout>
+    </File>
+
+    <File name="ErrorAppender" fileName="log/Error.log">
+      <PatternLayout>
+        <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+      </PatternLayout>
+    </File>
+
+    <File name="StatisticsAppender" fileName="log/Statistics.log">
+      <PatternLayout>
+        <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+      </PatternLayout>
+    </File>
+
+    <File name="GSMAppender" fileName="log/GSMPipe.log">
+      <PatternLayout>
+        <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+      </PatternLayout>
+    </File>
+
+    <File name="SATAppender" fileName="log/SATPipe.log">
+      <PatternLayout>
+        <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+      </PatternLayout>
+    </File>
+
+    <File name="BalLoaderAppender" fileName="log/BalLoader.log">
+      <PatternLayout>
+        <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+      </PatternLayout>
+    </File>
+  </Appenders>
+
+  <Loggers>
+    <Logger name="Framework" level="info" additivity="false">
+      <AppenderRef ref="FrameworkAppender"/>
+    </Logger>
+
+    <Logger name="ErrorLog" level="debug" additivity="false">
+      <AppenderRef ref="ErrorAppender"/>
+    </Logger>
+
+    <Logger name="Statistics" level="info" additivity="false">
+      <AppenderRef ref="StatisticsAppender"/>
+    </Logger>
+
+    <Logger name="GSMPipe" level="info" additivity="false">
+      <AppenderRef ref="GSMAppender"/>
+    </Logger>
+
+    <Logger name="SATPipe" level="info" additivity="false">
+      <AppenderRef ref="SATAppender"/>
+    </Logger>
+
+    <!-- Only used when BalLoader is switched on in SeaSatCom.properties.xml -->
+    <Logger name="BalLoader" level="info" additivity="false">
+      <AppenderRef ref="BalLoaderAppender"/>
+    </Logger>
+
+    <Logger name="SeaSatComRating" level="info" additivity="false">
+      <AppenderRef ref="FrameworkAppender"/>
+    </Logger>
+
+    <Root level="error">
+      <AppenderRef ref="Console"/>
+    </Root>
+  </Loggers>
+</Configuration>

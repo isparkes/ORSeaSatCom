@@ -29,7 +29,9 @@ import OpenRate.utils.ConversionUtils;
  */
 public class Rollup extends AbstractStubPlugIn {
 
-  ConversionUtils conversions;
+  // Initialised here rather than in init(): this module is a stub plug in,
+  // so nothing else ever assigns it.
+  ConversionUtils conversions = ConversionUtils.getConversionUtilsObject();
 
   // -----------------------------------------------------------------------------
   // ------------------ Start of inherited Plug In functions ---------------------

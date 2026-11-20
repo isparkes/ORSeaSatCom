@@ -21,6 +21,7 @@ import OpenRate.record.ErrorType;
 import OpenRate.record.IRecord;
 import OpenRate.record.RecordError;
 import OpenRate.record.TimePacket;
+import java.util.ArrayList;
 
 /**
  * This class looks up the price model to use, based on the roaming scenario
@@ -45,6 +46,11 @@ public class SATPriceModelLookup
     SeaSatRecord CurrentRecord = (SeaSatRecord) r;
 
     if (CurrentRecord.RECORD_TYPE == SeaSatRecord.SAT_RECORD_TYPE) {
+      // Pack rating adds charge packets. They cannot go onto the record
+      // while we are iterating over it, so they are collected here and
+      // added once the loop is done.
+      ArrayList<ChargePacket> packPackets = new ArrayList<>();
+
       for (ChargePacket tmpCP : CurrentRecord.getChargePackets()) {
         for (TimePacket tmpTZ : tmpCP.getTimeZones()) {
           // Prepare the paramters to perform the search on
@@ -69,6 +75,9 @@ public class SATPriceModelLookup
             // add a new charge packet
             ChargePacket PackCP = new ChargePacket();
             PackCP.packetType = "P";
+            TimePacket packTZ = new TimePacket();
+            packTZ.timeModel = tmpTZ.timeModel;
+            packTZ.timeResult = tmpTZ.timeResult;
 
             tmpSearchParameters[0] = CurrentRecord.OriginZone;
             tmpSearchParameters[1] = CurrentRecord.DestinationZone;
@@ -84,10 +93,15 @@ public class SATPriceModelLookup
               CurrentRecord.addError(tmpError);
             }
 
-            tmpTZ.priceGroup = RegexResult;
-            CurrentRecord.addChargePacket(PackCP);
+            packTZ.priceGroup = RegexResult;
+            PackCP.addTimeZone(packTZ);
+            packPackets.add(PackCP);
           }
         }
+      }
+
+      for (ChargePacket PackCP : packPackets) {
+        CurrentRecord.addChargePacket(PackCP);
       }
     }
     return r;
